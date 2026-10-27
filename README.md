@@ -1,9 +1,9 @@
-[![NuGet version](https://img.shields.io/nuget/v/CurrencyCloud.svg)](https://www.nuget.org/packages/CurrencyCloud/) [![CodeQL](https://github.com/CurrencyCloud/currencycloud-net/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/CurrencyCloud/currencycloud-net/actions/workflows/github-code-scanning/codeql)
+[![NuGet version](https://img.shields.io/nuget/v/CurrencyCloud.svg)](https://www.nuget.org/packages/CurrencyCloud/)
 # Currencycloud
 This is the official .NET SDK for v2 of Currencycloud's API. Additional documentation for each API endpoint can be found at [Currencycloud API documentation][introduction]. If you have any queries or you require support, please contact our development team at development@currencycloud.com
 
 ## Differences from upstream (Flowbrite fork)
-This is Flowbrite's fork of [CurrencyCloud/currencycloud-net](https://github.com/CurrencyCloud/currencycloud-net), currently based on upstream **10.0.0**. The changes below are deliberate. Keep them when merging future upstream releases. Most were offered upstream in [CurrencyCloud/currencycloud-net#108](https://github.com/CurrencyCloud/currencycloud-net/pull/108) (open since March 2025).
+This is Flowbrite's fork of [CurrencyCloud/currencycloud-net](https://github.com/CurrencyCloud/currencycloud-net), currently based on upstream **10.0.1**. The changes below are deliberate. Keep them when merging future upstream releases. Most were offered upstream in [CurrencyCloud/currencycloud-net#108](https://github.com/CurrencyCloud/currencycloud-net/pull/108) (open since March 2025).
 
 Fork releases are versioned `<upstream base>-flowbrite.<n>` (e.g. `10.0.0-flowbrite.1`) and tagged `v<version>`. `AssemblyVersion` stays the upstream one; `FileVersion` carries the fork release as its fourth part.
 

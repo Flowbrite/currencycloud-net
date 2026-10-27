@@ -38,7 +38,7 @@ namespace CurrencyCloud
         private readonly HttpMessageHandler httpMessageHandler;
         private Credentials credentials;
         private string onBehalfOf;
-        private const string userAgent = "CurrencyCloudSDK/2.0 .NET/10.0.0";
+        private const string userAgent = "CurrencyCloudSDK/2.0 .NET/10.0.1";
 
         /// <summary>
         /// Initializes a new instance of the API client using the default HTTP message handler.
