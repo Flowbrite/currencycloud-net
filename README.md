@@ -1,9 +1,8 @@
-[![NuGet version](https://img.shields.io/nuget/v/CurrencyCloud.svg)](https://www.nuget.org/packages/CurrencyCloud/)
 # Currencycloud
 This is the official .NET SDK for v2 of Currencycloud's API. Additional documentation for each API endpoint can be found at [Currencycloud API documentation][introduction]. If you have any queries or you require support, please contact our development team at development@currencycloud.com
 
 ## Differences from upstream (Flowbrite fork)
-This is Flowbrite's fork of [CurrencyCloud/currencycloud-net](https://github.com/CurrencyCloud/currencycloud-net), currently based on upstream **10.0.1**. The changes below are deliberate. Keep them when merging future upstream releases. Most were offered upstream in [CurrencyCloud/currencycloud-net#108](https://github.com/CurrencyCloud/currencycloud-net/pull/108) (open since March 2025).
+This is Flowbrite's fork of [CurrencyCloud/currencycloud-net](https://github.com/CurrencyCloud/currencycloud-net), currently based on upstream **10.0.1**. The changes below are deliberate. Keep them when merging future upstream releases. Most were offered upstream in [CurrencyCloud/currencycloud-net#108](https://github.com/CurrencyCloud/currencycloud-net/pull/108), opened in March 2025 and closed unmerged on 28 October 2026, so they live only in this fork.
 
 Fork releases are versioned `<upstream base>-flowbrite.<n>` (e.g. `10.0.0-flowbrite.1`) and tagged `v<version>`. `AssemblyVersion` stays the upstream one; `FileVersion` carries the fork release as its fourth part.
 
@@ -55,10 +54,12 @@ Fork releases are versioned `<upstream base>-flowbrite.<n>` (e.g. `10.0.0-flowbr
 - **Run the tests one framework at a time**, e.g. `dotnet test -f net8.0`. Running all frameworks together fails because every run's mock server tries to use port 5555.
 
 ## Installation
-The library is distributed on `NuGet`. To install the latest version, run the following command in the Package Manager Console: 
-```sh
-PM> Install-Package Currencycloud
-```
+This fork isn't published to NuGet (`Install-Package Currencycloud` installs upstream's SDK, not this one). Flowbrite builds it and copies the DLL into flowbrite-server, which references it directly from `.libs/Currencycloud/`:
+
+1. **Release first.** Set `<Version>` and `<FileVersion>` in `Source/CurrencyCloud/CurrencyCloud.csproj`, commit, and tag the commit `v<version>` (e.g. `v10.0.1-flowbrite.1`). The DLL records the commit it was built from, so build only once the tag is in place.
+2. **Build:** `dotnet build Source/CurrencyCloud -c Release -f net10.0`.
+3. **Copy** `CurrencyCloud.dll`, `CurrencyCloud.XML`, `Newtonsoft.Json.dll` and `Polly.dll` from `Source/CurrencyCloud/bin/Release/net10.0/` into flowbrite-server's `.libs/Currencycloud/`.
+4. **Record it** in `.libs/Currencycloud/FORK_VERSION` (`tag`, `sha`, `upstream`, `repo`, `build`), and commit that in flowbrite-server on its own.
 
 ## Supported .NET versions
 
@@ -121,7 +122,7 @@ var beneficiary = new CurrencyCloud.Entity.BeneficiaryFindParameters
     BeneficiaryCity = "London",
     BeneficiaryPostcode = "E1 6FQ",
     BeneficiaryStateOrProvince = "LND",
-    BeneficiaryDateOfBirth = new DateTime(1990, 7, 20),
+    BeneficiaryDateOfBirth = new DateOnly(1990, 7, 20),
     Page = 1,
     PerPage = 5,
     Order = "name",
@@ -201,7 +202,7 @@ await client.InitializeAsync(ApiServer.Demo, "loginId", "ApiKey");
 await client.OnBehalfOf("5c4716dc-42dd-4571-b4bf-0aa299fff928", async () =>
 {
   var beneficiary = await client.CreateBeneficiaryAsync(new Beneficiary("Martin McFly", "FR", "EUR", "Employee Funds"));
-  var conversion = await client.CreateConversionAsync(new ConversionCreate("EUR", "GBP", "buy", 10000, "Invoice Payment", true));
+  var conversion = await client.CreateConversionAsync(new Conversion("EUR", "GBP", "buy", 10000, true) { Reason = "Invoice Payment" });
   var payment = await client.CreatePaymentAsync(new Payment("EUR", beneficiary.Id, 10000, "Invoice Payment", "Invoice 1234")
   {
     ConversionId = conversion.Id,
